@@ -59,128 +59,245 @@
             </div>
         </section>
 
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="ui.switchTab('income')">
+                <span>📥</span> Kirim Orderi
+            </button>
+            <button class="nav-tab" onclick="ui.switchTab('expense')">
+                <span>📤</span> Chiqim Orderi
+            </button>
+            <button class="nav-tab" onclick="ui.switchTab('kas-book')">
+                <span>📖</span> Kassa Daftari
+            </button>
+        </nav>
+
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Add Receipt Form -->
-            <section class="form-section">
-                <h2 class="section-title">Yangi Kirim Order</h2>
-                <form id="receiptForm" class="receipt-form">
-                    <div class="form-grid">
-                        <div class="form-group full-width">
-                            <label for="receiptNumber" class="form-label">Qabul Raqami</label>
-                            <input type="text" id="receiptNumber" class="form-input" readonly
-                                placeholder="Avtomatik generatsiya qilinadi">
+            
+            <!-- SECTION 1: KIRIM (INCOME) -->
+            <div id="income-section" class="tab-content active">
+                <!-- Add Receipt Form -->
+                <section class="form-section">
+                    <h2 class="section-title">Kirim Orderi (KO-1)</h2>
+                    <form id="receiptForm" class="receipt-form">
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="receiptNumber" class="form-label">Qabul Raqami</label>
+                                <input type="text" id="receiptNumber" class="form-input" readonly placeholder="Avtomatik">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="payerName" class="form-label">Kimdan qabul qilindi (F.I.O) *</label>
+                                <input type="text" id="payerName" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="amount" class="form-label">Summa (so'm) *</label>
+                                <input type="number" id="amount" class="form-input" min="0" step="0.01" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="date" class="form-label">Sana *</label>
+                                <input type="date" id="date" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="debitAccount" class="form-label">Debit Schyoti *</label>
+                                <select id="debitAccount" class="form-input" required>
+                                    <option value="">Tanlang</option>
+                                    <option value="5010">5010 - Kassa (milliy valyuta)</option>
+                                    <option value="5020">5020 - Kassa (xorijiy valyuta)</option>
+                                    <option value="5110">5110 - Hisob-kitob schyoti (bank)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="creditAccount" class="form-label">Kredit Schyoti *</label>
+                                <select id="creditAccount" class="form-input" required>
+                                    <option value="">Tanlang</option>
+                                    <option value="4010">4010 - Xaridorlar va buyurtmachilar qarzi</option>
+                                    <option value="4220">4220 - Hisobdot shaxslar bo'yicha bo'naklar</option>
+                                    <option value="4310">4310 - Yetkazib beruvchilarga berilgan bo'naklar</option>
+                                    <option value="4720">4720 - Xodimlarga berilgan ssudalar</option>
+                                    <option value="4890">4890 - Boshqa qarzdorlar</option>
+                                    <option value="5110">5110 - Hisob-kitob schyoti (bank)</option>
+                                    <option value="6010">6010 - Yetkazib beruvchilar qarzi</option>
+                                    <option value="6310">6310 - Xaridorlardan olingan bo'naklar</option>
+                                    <option value="6410">6410 - Byudjet bilan hisob-kitob</option>
+                                    <option value="6710">6710 - Mehnat haqi to'lovi</option>
+                                    <option value="6990">6990 - Boshqa to'lovlar</option>
+                                    <option value="9010">9010 - Tayyor mahsulot sotish</option>
+                                    <option value="9020">9020 - Tovarlar sotish</option>
+                                    <option value="9030">9030 - Xizmatlar va ishlar</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="purpose" class="form-label">To'lov Maqsadi *</label>
+                                <input type="text" id="purpose" class="form-input" required>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="payerName" class="form-label">To'lovchi F.I.O *</label>
-                            <input type="text" id="payerName" class="form-input"
-                                placeholder="Masalan: Aliyev Vali Karimovich" required>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span class="btn-icon">➕</span> Kirim Qabul Qilish
+                        </button>
+                    </form>
+                </section>
+                
+                <!-- Receipts Table (Existing) -->
+                <section class="table-section">
+                     <div class="section-header">
+                        <h2 class="section-title">So'nggi Kirim Orderlar</h2>
+                    </div>
+                    <div class="table-container">
+                        <table class="receipts-table" id="receiptsTable">
+                            <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Kimdan</th>
+                                    <th>Summa</th>
+                                    <th>Debit</th>
+                                    <th>Kredit</th>
+                                    <th>Maqsad</th>
+                                    <th>Sana</th>
+                                    <th>Amallar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="receiptsTableBody">
+                                <!-- JS fills this -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SECTION 2: CHIQIM (EXPENSE) -->
+            <div id="expense-section" class="tab-content">
+                <section class="form-section expense-theme">
+                    <h2 class="section-title">Chiqim Orderi (KO-2)</h2>
+                    <form id="expenseForm" class="receipt-form">
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label">Chiqim Raqami</label>
+                                <input type="text" id="expenseNumber" class="form-input" readonly placeholder="Avtomatik">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Kimga berildi (F.I.O) *</label>
+                                <input type="text" id="recipientName" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Summa (so'm) *</label>
+                                <input type="number" id="expenseAmount" class="form-input" min="0" step="0.01" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Sana *</label>
+                                <input type="date" id="expenseDate" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Kredit Schyoti (Manba) *</label>
+                                <select id="expenseCreditAccount" class="form-input" required>
+                                    <option value="5010">5010 - Kassa (milliy valyuta)</option>
+                                    <option value="5020">5020 - Kassa (xorijiy valyuta)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Debit Schyoti (Xarajat) *</label>
+                                <select id="expenseDebitAccount" class="form-input" required>
+                                    <option value="">Tanlang</option>
+                                    <option value="4210">4210 - Mehnat haqi bo'yicha bo'nak (Avans)</option>
+                                    <option value="4220">4220 - Xizmat safari xarajatlari</option>
+                                    <option value="5110">5110 - Bank hisob raqamiga topshirish</option>
+                                    <option value="6010">6010 - Yetkazib beruvchilarga to'lov</option>
+                                    <option value="6410">6410 - Soliqlar va yig'imlar</option>
+                                    <option value="6990">6990 - Boshqa to'lovlar</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label class="form-label">Hujjat Asosi (Pasport va h.k)</label>
+                                <input type="text" id="expenseDocument" class="form-input" placeholder="Pasport AA 1234567...">
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label class="form-label">Maqsad *</label>
+                                <input type="text" id="expensePurpose" class="form-input" required>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="payerPhone" class="form-label">Telefon</label>
-                            <input type="tel" id="payerPhone" class="form-input" placeholder="+998 90 123 45 67">
-                        </div>
+                        <button type="submit" class="btn btn-danger">
+                            <span class="btn-icon">➖</span> Chiqim Qilish
+                        </button>
+                    </form>
+                </section>
 
-                        <div class="form-group">
-                            <label for="amount" class="form-label">Summa (so'm) *</label>
-                            <input type="number" id="amount" class="form-input" placeholder="0" min="0" step="0.01"
-                                required>
-                        </div>
+                <section class="table-section">
+                    <div class="section-header">
+                        <h2 class="section-title">So'nggi Chiqim Orderlar</h2>
+                    </div>
+                    <div class="table-container">
+                        <table class="receipts-table" id="expensesTable">
+                            <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Kimga</th>
+                                    <th>Summa</th>
+                                    <th>Debit</th>
+                                    <th>Kredit</th>
+                                    <th>Maqsad</th>
+                                    <th>Sana</th>
+                                    <th>Amallar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expensesTableBody">
+                                <!-- JS fills this -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
 
-                        <div class="form-group">
-                            <label for="date" class="form-label">Sana *</label>
-                            <input type="date" id="date" class="form-input" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="debitAccount" class="form-label">Debit Schyoti *</label>
-                            <select id="debitAccount" class="form-input" required>
-                                <option value="">Tanlang</option>
-                                <option value="5010">5010 - Kassa (milliy valyuta)</option>
-                                <option value="5020">5020 - Kassa (xorijiy valyuta)</option>
-                                <option value="5110">5110 - Hisob-kitob schyoti (bank)</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="creditAccount" class="form-label">Kredit Schyoti *</label>
-                            <select id="creditAccount" class="form-input" required>
-                                <option value="">Tanlang</option>
-                                <option value="4010">4010 - Xaridorlar va buyurtmachilar qarzi</option>
-                                <option value="4220">4220 - Hisobdot shaxslar bo'yicha bo'naklar</option>
-                                <option value="4230">4230 - (Hisobdot shaxslar bo'yicha bo'naklar)</option>
-                                <option value="4310">4310 - Yetkazib beruvchilarga berilgan bo'naklar</option>
-                                <option value="4720">4720 - Xodimlarga berilgan ssudalar</option>
-                                <option value="4730">4730 - Ayblor shaxslardan kannonmadlar</option>
-                                <option value="4890">4890 - Boshqa qarzdorlar (jisqa, kommunal va h.k.)</option>
-                                <option value="5110">5110 - Hisob-kitob schyoti (bank)</option>
-                                <option value="6010">6010 - Yetkazib beruvchilar qarzi</option>
-                                <option value="6310">6310 - Xaridorlardan olingan bo'naklar</option>
-                                <option value="6410">6410 - Byudjet bilan hisob-kitob</option>
-                                <option value="6710">6710 - Mehnat haqi to'lovi</option>
-                                <option value="6990">6990 - Boshqa to'lovlar (nafaqalar, moddiy yordam)</option>
-                                <option value="9010">9010 - Tayyor mahsulot sotish</option>
-                                <option value="9020">9020 - Tovarlar sotish</option>
-                                <option value="9030">9030 - Xizmatlar va ishlar</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label for="purpose" class="form-label">To'lov Maqsadi *</label>
-                            <input type="text" id="purpose" class="form-input" placeholder="Masalan: Tovar uchun to'lov"
-                                required>
-                        </div>
-
-                        <div class="form-group full-width">
-                            <label for="notes" class="form-label">Izoh</label>
-                            <textarea id="notes" class="form-input form-textarea"
-                                placeholder="Qo'shimcha ma'lumot (ixtiyoriy)" rows="3"></textarea>
+            <!-- SECTION 3: KASSA DAFTARI (CASH BOOK) -->
+            <div id="kas-book-section" class="tab-content">
+                <section class="table-section book-theme">
+                    <div class="book-header">
+                        <h2 class="section-title">Kassa Daftari</h2>
+                        <div class="book-summary">
+                            <div class="summary-item">
+                                <span>Boshlang'ich Qoldiq:</span>
+                                <strong>0 so'm</strong>
+                            </div>
+                            <div class="summary-item">
+                                <span>Joriy Qoldiq:</span>
+                                <strong id="currentBalance" class="balance-positive">0 so'm</strong>
+                            </div>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" id="submitBtn">
-                        <span class="btn-icon">➕</span>
-                        Kirim Qabul Qilish
-                    </button>
-                </form>
-            </section>
-
-            <!-- Receipts Table -->
-            <section class="table-section">
-                <div class="section-header">
-                    <h2 class="section-title">Barcha Kirim Orderlar</h2>
-                </div>
-
-                <div class="table-container">
-                    <table class="receipts-table" id="receiptsTable">
-                        <thead>
-                            <tr>
-                                <th>Qabul №</th>
-                                <th>To'lovchi</th>
-                                <th>Summa</th>
-                                <th>Debit</th>
-                                <th>Kredit</th>
-                                <th>Maqsad</th>
-                                <th>Sana</th>
-                                <th>Amallar</th>
-                            </tr>
-                        </thead>
-                        <tbody id="receiptsTableBody">
-                            <tr class="empty-state">
-                                <td colspan="8">
-                                    <div class="empty-message">
-                                        <span class="empty-icon">📋</span>
-                                        <p>Hozircha kirim orderlar yo'q</p>
-                                        <p class="empty-hint">Yuqoridagi formadan yangi kirim qo'shing</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+                    <div class="table-container">
+                        <table class="receipts-table book-table" id="cashBookTable">
+                            <thead>
+                                <tr>
+                                    <th>Sana</th>
+                                    <th>Hujjat №</th>
+                                    <th>Mazmuni (Kimdan/Kimga)</th>
+                                    <th>Debit (Kirim)</th>
+                                    <th>Kredit (Chiqim)</th>
+                                    <th>Qoldiq (Saldo)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cashBookBody">
+                                <!-- JS fills this -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
         </main>
 
         <!-- Footer -->

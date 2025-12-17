@@ -11,7 +11,7 @@ Professional kassaga naqd pul kirimini boshqarish va kuzatish uchun zamonaviy we
 - ✅ Qabul raqami avtomatik generatsiya (KK-2025-0001)
 - ✅ To'lovchi ma'lumotlari (F.I.O, telefon)
 - ✅ Summa va to'lov maqsadi
-- ✅ Debit va kredit schyotlari (buxgalteriya hisobi)
+- ✅ Debit va kredit schyotlari (to'liq buxgalteriya hisobi)
 - ✅ Orderlarni ko'rish, tahrirlash, o'chirish
 - ✅ Qabul chop etish (print)
 
@@ -23,22 +23,28 @@ Professional kassaga naqd pul kirimini boshqarish va kuzatish uchun zamonaviy we
 
 ### Buxgalteriya Schyotlari
 
-**Debit Schyotlari:**
-- 5010 - Kassa (milliy valyuta)
-- 5020 - Kassa (xorijiy valyuta)
-- 5110 - Bankdagi hisob raqamdagi pul mablag'lari
+**Debit Schyotlari (Kassaga Kirim):**
+- **5010** - Kassa (milliy valyuta)
+- **5020** - Kassa (xorijiy valyuta)
+- **5110** - Hisob-kitob schyoti (bank)
 
-**Kredit Schyotlari:**
-- 4010 - Xaridorlar va buyurtmachilar
-- 4210 - Xodimlarga berilgan ish haqi uchun bo'naklar
-- 4220 - Xizmat safariga berilgan bo'naklar
-- 4610 - Ta'sischilarning ustavdagi ulush bo'yicha qarzi
-- 5110 - Bankdagi hisob raqamdagi pul mablag'lari (bankdan pul olinganda)
-- 6630 - Ta'sischilardan ustavdagi ulush uchun qarzlar
-- 8710 - Taqsimlanmagan foyda
-- 9020 - Sotishdan daromad
-- 9030 - Xizmat ko'rsatishdan daromad
-- 9390 - Boshqa operatsion daromadlar
+**Kredit Schyotlari (Kirim Manbasi):**
+- **4010** - Xaridorlar va buyurtmachilar qarzi
+- **4220** - Hisobdot shaxslar bo'yicha bo'naklar
+- **4230** - (Hisobdot shaxslar bo'yicha bo'naklar)
+- **4310** - Yetkazib beruvchilarga berilgan bo'naklar
+- **4720** - Xodimlarga berilgan ssudalar
+- **4730** - Ayblor shaxslardan kannonmadlar
+- **4890** - Boshqa qarzdorlar (jisqa, kommunal va h.k.)
+- **5110** - Hisob-kitob schyoti (bank) - bankdan pul olinganda
+- **6010** - Yetkazib beruvchilar qarzi
+- **6310** - Xaridorlardan olingan bo'naklar
+- **6410** - Byudjet bilan hisob-kitob
+- **6710** - Mehnat haqi to'lovi
+- **6990** - Boshqa to'lovlar (nafaqalar, moddiy yordam)
+- **9010** - Tayyor mahsulot sotish
+- **9020** - Tovarlar sotish
+- **9030** - Xizmatlar va ishlar
 
 ## 🚀 Ishga Tushirish
 
@@ -83,7 +89,15 @@ Professional kassaga naqd pul kirimini boshqarish va kuzatish uchun zamonaviy we
 ## 📝 Foydalanish
 
 ### 1. Kirim Qabul Qilish
-1. Formani to'ldiring (to'lovchi, summa, debit/kredit schyotlari)
+1. Formani to'ldiring:
+   - To'lovchi F.I.O
+   - Telefon (ixtiyoriy)
+   - Summa
+   - Sana
+   - **Debit schyoti** (odatda 5010 - Kassa)
+   - **Kredit schyoti** (kirim manbasiga qarab)
+   - To'lov maqsadi
+   - Izoh (ixtiyoriy)
 2. "Kirim Qabul Qilish" tugmasini bosing
 3. Qabul raqami avtomatik beriladi
 
@@ -128,13 +142,10 @@ MIT License - Erkin foydalanish uchun
 
 Pull request'lar qabul qilinadi! Katta o'zgarishlar uchun avval issue oching.
 
-## 📧 Murojaat
-
-Savollar yoki takliflar bo'lsa, issue oching yoki pull request yuboring.
-
 ---
 
 **Eslatma**: Bu ilova to'liq offline ishlaydi va internet talab qilmaydi (faqat Google Fonts yuklanishi uchun).
 
-**Versiya**: 1.0.0  
-**Sana**: 2025-12-17
+**Versiya**: 2.0.0  
+**Sana**: 2025-12-17  
+**Yangilanish**: To'liq buxgalteriya schyotlari qo'shildi

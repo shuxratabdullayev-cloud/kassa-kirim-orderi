@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kassaga naqd pul kirim orderini boshqarish tizimi - professional va zamonaviy">
+    <meta name="keywords" content="kassa, naqd pul, kirim, qabul, accounting">
+    <meta name="author" content="Cash Receipt System">
+    <title>Naqd Pul Kirim Order Tizimi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="header-title">
+                    <span class="icon">💵</span>
+                    Naqd Pul Kirim Order Tizimi
+                </h1>
+                <p class="header-subtitle">Kassaga naqd pul kirimini professional boshqarish</p>
+            </div>
+        </header>
+
+        <!-- Statistics Dashboard -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <div class="stat-label">Bugungi Kirim</div>
+                    <div class="stat-value" id="todayTotal">0 so'm</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-info">
+                    <div class="stat-label">Oylik Kirim</div>
+                    <div class="stat-value" id="monthTotal">0 so'm</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                    <div class="stat-label">Jami Kirim</div>
+                    <div class="stat-value" id="totalAmount">0 so'm</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-info">
+                    <div class="stat-label">Orderlar Soni</div>
+                    <div class="stat-value" id="orderCount">0</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Add Receipt Form -->
+            <section class="form-section">
+                <h2 class="section-title">Yangi Kirim Order</h2>
+                <form id="receiptForm" class="receipt-form">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="receiptNumber" class="form-label">Qabul Raqami</label>
+                            <input 
+                                type="text" 
+                                id="receiptNumber" 
+                                class="form-input" 
+                                readonly
+                                placeholder="Avtomatik generatsiya qilinadi"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="payerName" class="form-label">To'lovchi F.I.O *</label>
+                            <input 
+                                type="text" 
+                                id="payerName" 
+                                class="form-input" 
+                                placeholder="Masalan: Aliyev Vali Karimovich" 
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="payerPhone" class="form-label">Telefon</label>
+                            <input 
+                                type="tel" 
+                                id="payerPhone" 
+                                class="form-input" 
+                                placeholder="+998 90 123 45 67"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="amount" class="form-label">Summa (so'm) *</label>
+                            <input 
+                                type="number" 
+                                id="amount" 
+                                class="form-input" 
+                                placeholder="0" 
+                                min="0" 
+                                step="0.01" 
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date" class="form-label">Sana *</label>
+                            <input 
+                                type="date" 
+                                id="date" 
+                                class="form-input" 
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="purpose" class="form-label">To'lov Maqsadi *</label>
+                            <input 
+                                type="text" 
+                                id="purpose" 
+                                class="form-input" 
+                                placeholder="Masalan: Tovar uchun to'lov" 
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="notes" class="form-label">Izoh</label>
+                            <textarea 
+                                id="notes" 
+                                class="form-input form-textarea" 
+                                placeholder="Qo'shimcha ma'lumot (ixtiyoriy)"
+                                rows="3"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span class="btn-icon">➕</span>
+                        Kirim Qabul Qilish
+                    </button>
+                </form>
+            </section>
+
+            <!-- Receipts Table -->
+            <section class="table-section">
+                <div class="section-header">
+                    <h2 class="section-title">Barcha Kirim Orderlar</h2>
+                </div>
+
+                <div class="table-container">
+                    <table class="receipts-table" id="receiptsTable">
+                        <thead>
+                            <tr>
+                                <th>Qabul №</th>
+                                <th>To'lovchi</th>
+                                <th>Telefon</th>
+                                <th>Summa</th>
+                                <th>Maqsad</th>
+                                <th>Sana</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="receiptsTableBody">
+                            <tr class="empty-state">
+                                <td colspan="7">
+                                    <div class="empty-message">
+                                        <span class="empty-icon">📋</span>
+                                        <p>Hozircha kirim orderlar yo'q</p>
+                                        <p class="empty-hint">Yuqoridagi formadan yangi kirim qo'shing</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 Naqd Pul Kirim Order Tizimi. Barcha huquqlar himoyalangan.</p>
+        </footer>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Kirim Orderni Tahrirlash</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <form id="editForm" class="receipt-form">
+                <input type="hidden" id="editId">
+                
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="editReceiptNumber" class="form-label">Qabul Raqami</label>
+                        <input 
+                            type="text" 
+                            id="editReceiptNumber" 
+                            class="form-input" 
+                            readonly
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editPayerName" class="form-label">To'lovchi F.I.O</label>
+                        <input 
+                            type="text" 
+                            id="editPayerName" 
+                            class="form-input" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editPayerPhone" class="form-label">Telefon</label>
+                        <input 
+                            type="tel" 
+                            id="editPayerPhone" 
+                            class="form-input"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editAmount" class="form-label">Summa (so'm)</label>
+                        <input 
+                            type="number" 
+                            id="editAmount" 
+                            class="form-input" 
+                            min="0" 
+                            step="0.01" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editDate" class="form-label">Sana</label>
+                        <input 
+                            type="date" 
+                            id="editDate" 
+                            class="form-input" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="editPurpose" class="form-label">To'lov Maqsadi</label>
+                        <input 
+                            type="text" 
+                            id="editPurpose" 
+                            class="form-input" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="editNotes" class="form-label">Izoh</label>
+                        <textarea 
+                            id="editNotes" 
+                            class="form-input form-textarea" 
+                            rows="3"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelEdit">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Print Modal -->
+    <div id="printModal" class="modal">
+        <div class="modal-content print-modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Qabul Chop Etish</h2>
+                <button class="modal-close" id="closePrintModal">&times;</button>
+            </div>
+            <div id="printContent" class="print-content">
+                <!-- Print content will be generated here -->
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="cancelPrint">Bekor qilish</button>
+                <button type="button" class="btn btn-primary" id="printBtn">
+                    <span class="btn-icon">🖨️</span>
+                    Chop Etish
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

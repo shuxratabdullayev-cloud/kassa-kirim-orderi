@@ -92,7 +92,7 @@ class ReceiptManager {
         const now = new Date();
         const year = now.getFullYear();
         const month = now.getMonth();
-        
+
         return this.receipts
             .filter(receipt => {
                 const receiptDate = new Date(receipt.date);
@@ -120,6 +120,8 @@ class UIManager {
         this.payerPhoneInput = document.getElementById('payerPhone');
         this.amountInput = document.getElementById('amount');
         this.dateInput = document.getElementById('date');
+        this.debitAccountInput = document.getElementById('debitAccount');
+        this.creditAccountInput = document.getElementById('creditAccount');
         this.purposeInput = document.getElementById('purpose');
         this.notesInput = document.getElementById('notes');
 
@@ -137,13 +139,15 @@ class UIManager {
         this.editForm = document.getElementById('editForm');
         this.closeModalBtn = document.getElementById('closeModal');
         this.cancelEditBtn = document.getElementById('cancelEdit');
-        
+
         this.editIdInput = document.getElementById('editId');
         this.editReceiptNumberInput = document.getElementById('editReceiptNumber');
         this.editPayerNameInput = document.getElementById('editPayerName');
         this.editPayerPhoneInput = document.getElementById('editPayerPhone');
         this.editAmountInput = document.getElementById('editAmount');
         this.editDateInput = document.getElementById('editDate');
+        this.editDebitAccountInput = document.getElementById('editDebitAccount');
+        this.editCreditAccountInput = document.getElementById('editCreditAccount');
         this.editPurposeInput = document.getElementById('editPurpose');
         this.editNotesInput = document.getElementById('editNotes');
 
@@ -212,6 +216,8 @@ class UIManager {
             payerPhone: this.payerPhoneInput.value.trim(),
             amount: parseFloat(this.amountInput.value),
             date: this.dateInput.value,
+            debitAccount: this.debitAccountInput.value,
+            creditAccount: this.creditAccountInput.value,
             purpose: this.purposeInput.value.trim(),
             notes: this.notesInput.value.trim()
         };
@@ -220,7 +226,7 @@ class UIManager {
         this.renderReceipts();
         this.updateStatistics();
         this.receiptForm.reset();
-        
+
         // Reset date to today and update receipt number
         const today = new Date().toISOString().split('T')[0];
         this.dateInput.value = today;
@@ -238,6 +244,8 @@ class UIManager {
             payerPhone: this.editPayerPhoneInput.value.trim(),
             amount: parseFloat(this.editAmountInput.value),
             date: this.editDateInput.value,
+            debitAccount: this.editDebitAccountInput.value,
+            creditAccount: this.editCreditAccountInput.value,
             purpose: this.editPurposeInput.value.trim(),
             notes: this.editNotesInput.value.trim()
         };
@@ -258,6 +266,8 @@ class UIManager {
             this.editPayerPhoneInput.value = receipt.payerPhone || '';
             this.editAmountInput.value = receipt.amount;
             this.editDateInput.value = receipt.date;
+            this.editDebitAccountInput.value = receipt.debitAccount || '';
+            this.editCreditAccountInput.value = receipt.creditAccount || '';
             this.editPurposeInput.value = receipt.purpose;
             this.editNotesInput.value = receipt.notes || '';
             this.editModal.classList.add('active');
@@ -323,6 +333,14 @@ class UIManager {
                     <span>${this.formatCurrency(receipt.amount)}</span>
                 </div>
                 <div class="print-row">
+                    <span class="print-label">Debit schyoti:</span>
+                    <span>${this.escapeHtml(receipt.debitAccount || '-')}</span>
+                </div>
+                <div class="print-row">
+                    <span class="print-label">Kredit schyoti:</span>
+                    <span>${this.escapeHtml(receipt.creditAccount || '-')}</span>
+                </div>
+                <div class="print-row">
                     <span class="print-label">To'lov maqsadi:</span>
                     <span>${this.escapeHtml(receipt.purpose)}</span>
                 </div>
@@ -347,11 +365,11 @@ class UIManager {
 
     renderReceipts() {
         const receipts = this.receiptManager.getAllReceipts();
-        
+
         if (receipts.length === 0) {
             this.receiptsTableBody.innerHTML = `
                 <tr class="empty-state">
-                    <td colspan="7">
+                    <td colspan="8">
                         <div class="empty-message">
                             <span class="empty-icon">📋</span>
                             <p>Hozircha kirim orderlar yo'q</p>
@@ -366,8 +384,9 @@ class UIManager {
                     <tr>
                         <td><strong>${this.escapeHtml(receipt.receiptNumber)}</strong></td>
                         <td>${this.escapeHtml(receipt.payerName)}</td>
-                        <td>${receipt.payerPhone ? this.escapeHtml(receipt.payerPhone) : '-'}</td>
                         <td><strong>${this.formatCurrency(receipt.amount)}</strong></td>
+                        <td>${this.escapeHtml(receipt.debitAccount || '-')}</td>
+                        <td>${this.escapeHtml(receipt.creditAccount || '-')}</td>
                         <td>${this.escapeHtml(receipt.purpose)}</td>
                         <td>${this.formatDate(receipt.date)}</td>
                         <td>
@@ -456,7 +475,7 @@ let ui;
 document.addEventListener('DOMContentLoaded', () => {
     receiptManager = new ReceiptManager();
     ui = new UIManager(receiptManager);
-    
+
     console.log('Naqd Pul Kirim Order Tizimi ishga tushdi!');
     console.log(`Jami ${receiptManager.getAllReceipts().length} ta kirim yuklandi`);
 });
